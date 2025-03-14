@@ -11,6 +11,11 @@ export class PrismaUserRepository implements UserRepository {
     async findAll(): Promise<User[]> {
         return prisma.user.findMany();
     }
+    async findByEmail(email: string): Promise<User | null> {
+        return prisma.user.findUnique({
+            where: { email }
+        });
+    }
     async update(id: string, data: Partial<User>): Promise<User> {
         return prisma.user.update({
             where: {id},

@@ -8,11 +8,15 @@ const createUser = new CreateUser(userRepository);
 export const createUserController = async (req: Request, res: Response): Promise<Response> => {
     try {
         const {name, email, password} = req.body;
-        const user =  await createUser.execute(name, email, password);
-        return res.status(201).json({sucess: 'User created'});
+        const {user, token} =  await createUser.execute(name, email, password);
+
+        return res.status(201).json({
+            sucess: 'User created',
+            user: {id: user.id, name: user.name, email: user.email},
+            token
+        });
     } catch(error) {
-        console.error(error);
-        return res.status(500).json({error: 'Internal Server Error'});
-        
+        console.error(error);        
+        return res.status(500).json({error: 'Internal Server Error'});        
     }
 }
